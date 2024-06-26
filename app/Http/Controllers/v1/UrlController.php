@@ -30,6 +30,12 @@ class UrlController extends Controller
      * Decode the short url to original url
      */
     public function decode(Request $request) {
-        
+        try {
+            $request->validate(['url' => 'required|url']);
+            
+            return $this->urlService->decode($request->url);
+        } catch (ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+        }
     }
 }

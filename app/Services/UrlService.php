@@ -36,10 +36,42 @@ class UrlService
     }
 
     /**
+     * Decode the short url to original url
+     */
+    public function decode(string $shortUrl) {
+        $shortUrl = $this->getShortUrlWithoutDomainName($shortUrl);
+
+        // check if the decoded url is cached
+        if ($originalUrl = Cache::get($shortUrl)) {
+            return response()->json(['original_url' => $originalUrl], 200);
+        }
+
+        // original url is not cached. So, fetch it from the DB
+        $urlMapping = Url::where('short_url', $shortUrl)->first();
+        if ($urlMapping) {
+            // cache and return the original url
+            Cache::put($shortUrl, $urlMapping->original_url);
+
+            return response()->json(['original_url' => $urlMapping->original_url], 200);
+        }
+
+        // the short url is not present in the DB too.
+        return response()->json(['error' => 'The short url is invalid'], 404);
+    }
+
+    /**
      * Get short url with domain name
      */
     public function getFullShortUrl($shortUrl)
     {
         return config('url_shortening_service.domain_name') . '/' . $shortUrl;
+    }
+
+    /**
+     * Get short url without domain name
+     */
+    public function getShortUrlWithoutDomainName($shortUrl)
+    {
+        return str_replace(config('url_shortening_service.domain_name') . '/', '', $shortUrl);
     }
 }
