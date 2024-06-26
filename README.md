@@ -15,3 +15,16 @@ To run the server, run
 ```bash
 php artisan serve
 ```
+
+## Testing
+
+- Create .env.testing file for testing. 
+- Create a new DB for running automated tests. Use this DB name in the .env.testing DB_DATABASE constant.
+
+To run the tests, run
+```bash
+php artisan test
+```
+
+## Details:
+- The domain name of the short URLs is not saved in the database since it is constant for all of them. Only the 6 characters are stored.
