@@ -26,5 +26,10 @@ To run the tests, run
 php artisan test
 ```
 
-## Details:
+## Details
 - The domain name of the short URLs is not saved in the database since it is constant for all of them. Only the 6 characters are stored.
+- For simplicity, I have used Str::random() to generate the short URL. It could be enhanced to ensure the short URLs are unique.
+
+## Postman Collections
+Please find the postman collections here.
+https://drive.google.com/file/d/1HM6te0QXzOyyb1H-DYtFMVnCGsr7E_09/view?usp=sharing
